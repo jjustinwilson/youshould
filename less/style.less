@@ -1,0 +1,33 @@
+@light-gray: rgb(245, 245, 245);
+@mid-gray: rgb(207, 207, 207);
+
+.youshould_form_container{
+  background-color: light-gray;
+  padding:25px;
+  .should_container{
+    width:auto;
+    .should{
+      margin:0px;
+    }
+  }
+
+}
+
+.master_list{
+  padding-left: 0px;
+  li{
+    list-style: none;
+    display:block;
+    border:1px solid @mid-gray;
+    background-color: @light-gray;
+    padding:0px;
+    margin-bottom:15px;
+    overflow:auto;
+    min-height:150px;
+    .itemImage{
+      background-size:cover;
+      min-height:150px;
+      background-position: center;
+    }
+  }
+}
