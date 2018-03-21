@@ -5,7 +5,6 @@ const async = require("async");
 var log = require('why-is-node-running');
 var jwt = require('jsonwebtoken');
 var auth = require("../config/auth.js");
-
 var JwtStrategy = require('passport-jwt').Strategy,
     ExtractJwt = require('passport-jwt').ExtractJwt;
 module.exports = function(app, passport) {
@@ -19,29 +18,67 @@ module.exports = function(app, passport) {
 
     // PROFILE SECTION =========================
     app.get('/list', isLoggedIn, function(req, res) {
-      log();
-      console.log("logged in");
-     var pro = Item.find({
-          user: req.user.local.email
-      }).exec();
-
-      pro.then(function(response){
-          console.log(response);
-          res.render('list.pug', {
-              user : req.user,
-              list:response
-          });
-      })
-      .then(null);
 
 
+
+
+
+
+      var itemsSent = function(callback){
+        Item.find({
+             user: req.user.local.email
+         },function(err,list){
+           if(err){
+             callback(err,null)
+           }
+           callback(null, list)
+         });
+      }
+
+      var itemsReceived = function(callback){
+        Item.find({
+             who: req.user.local.email
+         },function(err,list){
+           if(err){
+             callback(err,null)
+           }
+           callback(null, list)
+         });
+      }
+
+      var extractDomain = function getHostName(url) {
+          var match = url.match(/:\/\/(www[0-9]?\.)?(.[^/:]+)/i);
+          if (match != null && match.length > 2 && typeof match[2] === 'string' && match[2].length > 0) {
+          return match[2];
+          }
+          else {
+              return null;
+          }
+      }
+
+      var render = function(err,results){
+        //console.log(results)
+
+        res.render('list.pug', {
+            user : req.user,
+            itemsSent:results.itemsSent,
+            itemsReceived:results.itemsReceived,
+            extractDomain:extractDomain
+        });
+      }
+
+
+      async.parallel({
+        itemsSent:itemsSent,
+        itemsReceived:itemsReceived
+      },render)
 
     });
-    app.post("/list",function(req,res){
+    app.post("/list",isLoggedIn,function(req,res){
       var getMeta = function(call){
         console.log("getting Meta")
         extract({ uri: req.body.url },function(err,output){
-            console.log(output)
+
             if(err){
               console.log(err)
               call(err,null);
@@ -53,12 +90,12 @@ module.exports = function(app, passport) {
       }
 
       var savePost = function(extract,callback){
-        console.log({"extracted_data":extract})
+        //console.log({"extracted_data":extract})
         var saveItem = new Item({
             url:req.body.url,
-            //user:req.user.local.email,
-            user:"jwilson@ij.org",
-            title:extract.ogTitle,
+            user:req.user.local.email,
+
+            title:extract.title,
             image:extract.ogImage,
             meta:extract,
             who:req.body.who,
@@ -82,6 +119,7 @@ module.exports = function(app, passport) {
       ],function(err,results){
         console.log(results)
         if(!err){
+          res.send(results)
           res.redirect('/list');
         }else{
           req.session.save_error = 'There was a problem saving the post.';
@@ -91,85 +129,6 @@ module.exports = function(app, passport) {
     });
 
 
-    //isLoggedIn,
-    app.post('/listfoo', function(req,res){
-
-
-
-
-
-        //Gets Meta Data From Item URL
-        var getMeta = function(callback){
-          console.log("getting Meta")
-          extract({ uri: req.body.url },function(err,output){
-              console.log(output)
-              if(err){
-                console.log(err)
-                callback(err,null);
-              }
-              callback(null,output);
-          });
-        }
-
-        //Saves Post to Database
-        var savePost = function(extract,callback){
-          console.log({"extracted_data":extract})
-          var saveItem = new Item({
-              url:req.body.url,
-              //user:req.user.local.email,
-              user:"jwilson@ij.org",
-              title:output.ogTitle,
-              image:output.ogImage,
-              meta:output,
-              who:req.body.who,
-              verb:req.body.verb
-          }
-          );
-          saveItem.save(function(err,product){
-            if(err){
-              callback(err,null)
-            }
-              callback(null,product)
-          })
-
-        }
-        //Renders The Final List
-        var getList = function(callback){
-          var list = Item.find({
-               user: req.user.local.email
-           },function(err,list){
-             if(err){
-               callback(err,null)
-             }
-             callback(null, list)
-           })
-        }
-        var render = function(err,results){
-          console.log(results)
-          res.render('list.pug', {
-              user : req.user,
-              list:results.getList
-          });
-        }
-
-        var waterfall = function(callback){
-          async.waterfall([
-                            getMeta,
-                            //savePost,
-                            //getList
-                          ],
-                            function(results){
-                              res.send(results);
-                            })
-        }
-        // async.parallel({
-        //   "waterfall":
-        //   "meta":getMeta,
-        //   "savePost":savePost,
-        //   "getList":getList
-        // },render);
-
-    });
 
     app.post("/item/remove/",isLoggedIn,function(req,res){
         Item.remove({ "_id": req.body.id }, function (err) {

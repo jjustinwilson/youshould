@@ -19,15 +19,15 @@ html
 							.col-sm-3
 								div.form-group
 									input.form-control(name="who" id="who" autocomplete="off"  data-provide="typeahead" placeholder="WHO")
-							.col-sm-2.should_container 
+							.col-sm-2.should_container
 								h3.should SHOULD
 							.col-sm-2
-										
+
 								div.form-group
 									select.form-control(name="verb")
 										option read
 										option listen to
-										option watch	
+										option watch
 							.col-sm-4
 								div.form-group
 									input.form-control(name="url" id = "url")
@@ -37,13 +37,18 @@ html
 				.row
 					.col-sm-offset-1.col-sm-10
 						ul.master_list
-							each val in list
+							each val in itemsSent
 								li.item
 									.col-sm-2.itemImage(style="background-image:url("+val.image+")")
 									.col-sm-10
-										h4 
+										h4
 											a(href = val.url target="_blank") #{val.title}
-										h6 
+										h6
 											a(href = val.url target="_blank") #{val.url}
+										img.favicon(src = "http://"+extractDomain(val.url)+"/favicon.ico") 	
+										h6 #{extractDomain(val.url)}
+										
+											
+										
 										div.remove(data-id=val._id)
 											span.glyphicon.glyphicon-trash(aria-hidden="true")

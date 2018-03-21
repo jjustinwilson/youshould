@@ -36,7 +36,7 @@ app.use(express.static('public'))
 app.use('/css', expressLess(__dirname + '/less'));
 // required for passport
 app.use(session({
-    secret: 'ilovescotchscotchyscotchscotch', // session secret
+    secret: 'LrtmAqfGHcVXVPq3ikqxnats', // session secret
     resave: true,
     saveUninitialized: true
 }));
