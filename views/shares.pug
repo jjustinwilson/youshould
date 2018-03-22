@@ -1,0 +1,25 @@
+extends template
+
+block content
+  .container
+    .row
+      .col-md-offset-2.col-md-8
+        h1 Your Shares
+    .row
+      .col-sm-offset-2.col-sm-8
+        
+        ul.master_list
+          if itemsSent
+            each val in itemsSent
+              li.item
+                .col-sm-2.itemImage(style="background-image:url("+val.image+")")
+                .col-sm-10
+                  h6 You think #{val.who} should #{val.verb} this
+                  h4
+                    a(href = val.url target="_blank") #{val.title}
+                  h6
+                    a(href = val.url target="_blank") #{val.url}
+                    img.favicon(src = "http://"+extractDomain(val.url)+"/favicon.ico") 	
+                    h6 #{extractDomain(val.url)}
+                  div.remove(data-id=val._id)
+                    span.glyphicon.glyphicon-trash(aria-hidden="true")

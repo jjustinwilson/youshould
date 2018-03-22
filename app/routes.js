@@ -1,29 +1,83 @@
 var Item = require('../app/models/item');
 var Users = require("../app/models/user");
+var shares = require("../app/shares")
 const extract = require('meta-extractor');
 const async = require("async");
-var log = require('why-is-node-running');
+//var log = require('why-is-node-running');
 var jwt = require('jsonwebtoken');
 var auth = require("../config/auth.js");
 var JwtStrategy = require('passport-jwt').Strategy,
     ExtractJwt = require('passport-jwt').ExtractJwt;
+var nodeMailer = require("nodemailer");
+var multer  = require('multer');
+var mime = require('mime/lite');
+var crypto = require('crypto');
+const fs = require('fs');
+const sharp = require('sharp');
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/profile')
+  },
+  filename: function (req, file, cb) {
+    crypto.pseudoRandomBytes(16, function (err, raw) {
+      cb(null, raw.toString('hex') + Date.now() + '.' + mime.getExtension(file.mimetype));
+    });
+
+  }
+});
+var upload = multer({ storage: storage });
+//var upload = multer({ dest: 'public/profile' })
+
+
+
+
 module.exports = function(app, passport) {
 
 // normal routes ===============================================================
+    // app.get("/upload",function(req,res){
+    //     res.render("upload.pug")
+    // })
+    // app.post("/upload",upload.single('image'),resizeimage,function(req,res){
+    //
+    //     console.log(req.resizedimage);
+    //     res.render("upload.pug",{image:req.resizedimage})
+    //
+    //
+    //
+    //
+    //
+    // })
 
     // show the home page (will also have our login links)
     app.get('/', function(req, res) {
         res.render('index.ejs');
     });
+    app.get("/profile",isLoggedIn,function(req,res){
+        res.render("profile.pug",{"user":req.user});
+    });
+    app.get("/profile/edit",isLoggedIn,function(req,res){
+        res.render("profile-edit.pug",{"user":req.user});
+    });
+    app.post("/profile/edit",isLoggedIn,upload.single('pic'),resizeimage,function(req,res){
+      var update = {
+        "local.email":req.body.email,
+        "local.name":req.body.name,
+        "local.description":req.body.description
+      }
+      if(req.resizedimage){
+        update["local.imageURL"] = req.resizedimage
+      }
+        Users.findByIdAndUpdate(req.body.id,{
+            $set:{update}
+        },{new:true},function(err,result){
+            //console.log(result)
+            res.redirect("/profile/edit")
+        })
 
+
+    })
     // PROFILE SECTION =========================
     app.get('/list', isLoggedIn, function(req, res) {
-
-
-
-
-
-
       var itemsSent = function(callback){
         Item.find({
              user: req.user.local.email
@@ -110,16 +164,43 @@ module.exports = function(app, passport) {
         })
 
       }
+      var sendEmail = function(item, callback){
+          let transporter = nodeMailer.createTransport({
+          host: 'smtp.gmail.com',
+          port: 465,
+          secure: true,
+          auth: {
+              user: 'justin@jamesjwilson.com',
+              pass: '4petessake'
+          }
+      });
+      let mailOptions = {
+          from: '"J. Justin Wilson" <'+req.user.local.email+'>', // sender address
+          to: req.body.who, // list of receivers
+          subject: "Foo", // Subject line
+          text: "This is the body text", // plain text body
+          html: '<b>NodeJS Email Tutorial</b>' // html body
+      };
 
+      transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+              return console.log(error);
+          }
+          console.log('Message %s sent: %s', info.messageId, info.response);
+              callback(null,info)
+          });
+
+      }
 
       async.waterfall([
         getMeta,
-        savePost
+        savePost,
+        sendEmail
 
       ],function(err,results){
         console.log(results)
         if(!err){
-          res.send(results)
+          //res.send(results)
           res.redirect('/list');
         }else{
           req.session.save_error = 'There was a problem saving the post.';
@@ -128,7 +209,7 @@ module.exports = function(app, passport) {
       })
     });
 
-
+    app.get("/shares",isLoggedIn,shares)
 
     app.post("/item/remove/",isLoggedIn,function(req,res){
         Item.remove({ "_id": req.body.id }, function (err) {
@@ -146,6 +227,11 @@ module.exports = function(app, passport) {
     });
 
 
+    // LOGOUT ==============================
+app.get('/logout', function(req, res) {
+    req.logout();
+    res.redirect('/');
+});
 
 
 
@@ -238,11 +324,7 @@ module.exports = function(app, passport) {
 
 
 
-    // LOGOUT ==============================
-    app.get('/logout', function(req, res) {
-        req.logout();
-        res.redirect('/');
-    });
+
 
 });
 
@@ -433,4 +515,24 @@ function verifyToken(req, res, next) {
     req.userId = decoded.id;
     next();
   });
+}
+function resizeimage(req,res,next){
+  if(req.file){
+    var userid = req.user._id
+    const readStream = fs.createReadStream(req.file.path);
+    let transform = sharp(req.file.path)
+          .toFormat("jpg")
+          .resize(300,300)
+          .toFile("public/profile/300/"+userid+".jpg",function(err){
+            if(err){console.log(err);return; next();}
+            req.resizedimage = userid+".jpg";
+            next();
+
+          })
+  }else{
+    next();
+  }
+
+
+
 }

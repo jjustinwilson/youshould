@@ -1,54 +1,41 @@
-html
-		head
-			title Node Authentication
-			script(src="//code.jquery.com/jquery-3.3.1.min.js")
-			script(src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js")
-			script(src="/scripts/youshould.js")
-			link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
-			link(rel='stylesheet', href='//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css')
-			link(rel='stylesheet', type = "text/css" href='/css/style.css')
-		body
-			.container
-				.row
-					.col-sm-6.col-sm-offset-3
-						h1 You Should
-						h2 #{user.local.email}
-				.row
-					.col-sm-10.col-sm-offset-1.youshould_form_container
-						form(id="youshould", method="post", action="/list")
-							.col-sm-3
-								div.form-group
-									input.form-control(name="who" id="who" autocomplete="off"  data-provide="typeahead" placeholder="WHO")
-							.col-sm-2.should_container
-								h3.should SHOULD
-							.col-sm-2
+extends template.pug		
+	
+block content
+	.container
+		.row
+			.col-sm-10.col-sm-offset-1.youshould_form_container
+				form(id="youshould", method="post", action="/list")
+					.col-sm-3
+						div.form-group
+							input.form-control(name="who" id="who" autocomplete="off"  data-provide="typeahead" placeholder="WHO")
+					.col-sm-2.should_container
+						h3.should SHOULD
+					.col-sm-2
 
-								div.form-group
-									select.form-control(name="verb")
-										option read
-										option listen to
-										option watch
-							.col-sm-4
-								div.form-group
-									input.form-control(name="url" id = "url")
-							.col-sm-1
-								div.form-group
-									input.btn.btn-primary(type="submit")
+						div.form-group
+							select.form-control(name="verb")
+								option read
+								option listen to
+								option watch
+					.col-sm-4
+						div.form-group
+							input.form-control(name="url" id = "url")
+					.col-sm-1
+						div.form-group
+							input.btn.btn-primary(type="submit")
 				.row
 					.col-sm-offset-1.col-sm-10
 						ul.master_list
-							each val in itemsSent
+							each val in itemsReceived
 								li.item
 									.col-sm-2.itemImage(style="background-image:url("+val.image+")")
 									.col-sm-10
+										h6 #{val.who} thinks should #{val.verb} this
 										h4
 											a(href = val.url target="_blank") #{val.title}
 										h6
 											a(href = val.url target="_blank") #{val.url}
 										img.favicon(src = "http://"+extractDomain(val.url)+"/favicon.ico") 	
 										h6 #{extractDomain(val.url)}
-										
-											
-										
 										div.remove(data-id=val._id)
 											span.glyphicon.glyphicon-trash(aria-hidden="true")

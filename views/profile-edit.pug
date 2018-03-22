@@ -1,0 +1,24 @@
+extends template.pug		
+	
+block content
+	.container
+		.row
+			form(action="/profile/edit" method="POST" enctype="multipart/form-data")
+				.col-md-offset-2.col-md-4
+					input(type="hidden" name = "id" id="id" value = user._id)
+					.form-group
+						label(for="Name")
+						input.form-control(name="name" id="name" value= user.local.name)
+					.form-group
+						lable(for="email")
+						input.form-control(name="email" id="email" value=user.local.email)
+					.form-group
+						lable(for="description")
+						input.form-control(name="description" value = user.local.description)
+					.form-group
+						input(type="file" name="pic" accept="image/*")
+					.form-group
+						button.btn.btn-default(type="sumbit") Update
+				.col-md-2
+					if user.local.imageURL
+						img.img-responsive(src="/profile/300/"+user.local.imageURL)

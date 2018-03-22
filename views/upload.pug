@@ -1,0 +1,7 @@
+html
+  body
+    if image
+      img(src="/images/profile/300/"+image)
+    form(action="/upload" method="post" enctype="multipart/form-data")
+      input(type = "file" name = "image" id = "image")
+      input(type="submit")

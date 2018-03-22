@@ -1,51 +1,16 @@
-doctype html
-html
-	head
-		title Node Authentication
-		link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css')
-		link(rel='stylesheet', href='//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css')
-		style.
-			body         { padding-top:80px; word-wrap:break-word; }
-	body
-		.container
-			.page-header.text-center
-				h1
-					span.fa.fa-anchor
-					|  Profile Page
-				a.btn.btn-default.btn-sm(href='/logout') Logout
-			.row
-				// LOCAL INFORMATION
-				.col-sm-6
-					.well
-						h3
-							span.fa.fa-user
-							|  Local
-				// FACEBOOK INFORMATION
-				.col-sm-6
-					.well
-						h3.text-primary
-							span.fa.fa-facebook
-							|  Facebook
-						// check if the user has this token (is the user authenticated with this social account)
-			.row
-				// TWITTER INFORMATION
-				.col-sm-6
-					.well
-						h3.text-info
-							span.fa.fa-twitter
-							|  Twitter
-				// GOOGLE INFORMATION
-				.col-sm-6
-					.well
-						h3.text-danger
-							span.fa.fa-google-plus
-							|  Google+
-			.text-center
-				p
-					| A demo by 
-					a(href='http://scotch.io') Scotch
-					| .
-				p
-					| Visit the 
-					a(href='http://scotch.io/tutorials/javascript/easy-node-authentication-setup-and-local') tutorial
-					| .
+extends template.pug		
+	
+block content
+	.container
+		.row
+			.col-md-offset-2.col-md-8
+				if user.local.imageURL
+					img(src="/profile/300/"+user.local.imageURL)
+				h1 #{user.local.name}
+				h4 #{user.local.description}
+				
+				a.btn.btn-default(href="/profile/edit") Edit
+				
+				hr
+				
+				

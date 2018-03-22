@@ -18,7 +18,7 @@ var configDB = require('./config/database.js');
 
 var expressLess = require('express-less');
 
-var log = require('why-is-node-running');
+//var log = require('why-is-node-running');
 // configuration ===============================================================
 mongoose.connect(configDB.url); // connect to our database
 mongoose.promise = Promise;

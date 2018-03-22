@@ -1,0 +1,42 @@
+html
+  head
+    title Node Authentication
+    script(src="//code.jquery.com/jquery-3.3.1.min.js")
+    script(src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js")
+    script(src="/scripts/youshould.js")
+    link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+    link(rel='stylesheet', href='//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css')
+    link(rel='stylesheet', type = "text/css" href='/css/style.css')
+  body
+    .navbar.navbar-default(role='navigation')
+      .container
+        .navbar-header
+          a.navbar-brand(href='#') 
+            img.logo(src = "/images/logo.png")
+            h3 Should
+        .navbar-collapse.collapse
+          ul.nav.navbar-nav
+            li
+              a(href='list') Your List
+            li
+              a(href='/shares') Shares    
+          ul.nav.navbar-nav.navbar-right
+            li
+              ul.dropdown-menu(role='menu')
+                li
+                  a(href="/profile") Profile
+                li
+                  a(href='/profile/edit') Edit Profile
+              if user.local.name
+                if user.local.imageURL
+                  img.menuProfileImage(src = "/profile/300/"+user.local.imageURL)
+                a.dropdown-toggle(href='#', data-toggle='dropdown') #{user.local.name} 
+                  span.carat
+                
+              else
+                a.dropdown-toggle(href='#', data-toggle='dropdown') Profile 
+              
+    block content
+    footer.footer
+        
+    

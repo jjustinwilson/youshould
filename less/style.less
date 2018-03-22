@@ -1,6 +1,58 @@
+@import url(https://fonts.googleapis.com/css?family=Raleway:200,300,400,500,700,800);
+
 @light-gray: rgb(245, 245, 245);
 @mid-gray: rgb(207, 207, 207);
+p, a, h1,h2,h3,h4,h5,h6,h7{
+  font-family: 'Raleway','Helvetica', 'Arial', sans-serif;
+  font-weight:300;
+}
+body > div.navbar.navbar-default > div > div.navbar-collapse.collapse > ul.nav.navbar-nav.navbar-right > li > img{
 
+}
+.navbar{
+  background-color: white;
+  border:none;
+  .container{
+    .navbar-header{
+      .navbar-brand{
+      //  width:250px;
+        font-family: Raleway, sans-serif;
+        font-weight: 300;
+        img.logo{
+          height:40px;
+          float:left;
+        }
+        h3{
+          float:left;
+          display:inline-block;
+          margin:0px 0px 0px 15px;
+          font-size:30px;
+        }
+      }
+    }
+    .navbar-collapse{
+      ul.nav.navbar-nav{
+      li{
+        a{
+          padding-top:20px;
+        }
+      }
+      }
+      ul.navbar-right{
+        .menuProfileImage{
+              height:30px;
+              width:30px;
+              border-radius: 50%;
+              float:left;
+              margin:5px 0px 5px 0px;
+            }
+            a.dropdown-toggle{
+              float:left;
+            }
+      }
+    }
+  }
+}
 .youshould_form_container{
   background-color: light-gray;
   padding:25px;
@@ -14,14 +66,21 @@
 }
 
 .master_list{
+  margin-top:100px;
   padding-left: 0px;
   li{
+    a{
+      font-weight: 500;
+    }
+    h6{
+      text-transform: uppercase;
+    }
     list-style: none;
     display:block;
-    border:1px solid @mid-gray;
-    background-color: @light-gray;
+    //border:1px solid @mid-gray;
+    //background-color: @light-gray;
     padding:0px;
-    margin-bottom:15px;
+    margin-bottom:45px;
     overflow:auto;
     min-height:150px;
     .itemImage{

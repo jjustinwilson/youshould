@@ -7,7 +7,10 @@ var userSchema = mongoose.Schema({
 
     local            : {
         email        : String,
-        password     : String
+        password     : String,
+        name         : String,
+        description  : String,
+        imageURL     : String
     },
     facebook         : {
         id           : String,
@@ -38,7 +41,7 @@ userSchema.methods.generateHash = function(password) {
 // checking if password is valid
 userSchema.methods.validPassword = function(password) {
     //console.error(password, this.local.password)
-    
+
     return bcrypt.compareSync(password, this.local.password);
 };
 userSchema.methods.comparePassword = function (passw, cb) {
