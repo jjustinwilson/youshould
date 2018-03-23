@@ -3,23 +3,47 @@ extends template
 block content
   .container
     .row
-      .col-md-offset-2.col-md-8
-        h1 Your Shares
+      .col-sm-offset-1.col-sm-10
     .row
-      .col-sm-offset-2.col-sm-8
+      .col-sm-offset-1.col-sm-10
+        ul.nav.nav-pills(role="tablist")
+          li(role="presentation").active
+            a.active(href="#list"  aria-controls="list" role="tab" data-toggle="tab") Inbox
+          li
+            a(href="#shares"  aria-controls="shares" role="tab" data-toggle="tab") Sent
+          li
+            a(href="#archive"  aria-controls="archive" role="tab" data-toggle="tab") Archive
+            
+          li
+            a(href="#read"  aria-controls="read" role="tab" data-toggle="tab") Read  
+        .tab-content
+          #list.tab-pane.fade.active.in 
+            h3 Inbox  
+            if inbox
+              ul.master_list
+                each val in inbox
+                  - var open = (val.open ? 'read' : '')
+                  include article-list.pug
+          #shares.tab-pane.fade
+            h3 Sent
+            if sent
+              ul.master_list.boxes
+                each val in sent
+                  - var open = (val.open ? 'read' : '')
+                  include article-list.pug
+          #archive.tab-pane.fade
+            h3 Archived Items
+            if itemsArchived
+              ul.master_list
+                each val in itemsArchived
+                  - var open = "read"
+                  //include article-list.pug
+          #read.tab-pane.fade
+            h3 Read Items
+            if itemsRead
+              ul.master_list
+                each val in itemsRead
+                  - var open = (val.open ? 'read' : '')
+                  include article-list.pug  
         
-        ul.master_list
-          if itemsSent
-            each val in itemsSent
-              li.item
-                .col-sm-2.itemImage(style="background-image:url("+val.image+")")
-                .col-sm-10
-                  h6 You think #{val.who} should #{val.verb} this
-                  h4
-                    a(href = val.url target="_blank") #{val.title}
-                  h6
-                    a(href = val.url target="_blank") #{val.url}
-                    img.favicon(src = "http://"+extractDomain(val.url)+"/favicon.ico") 	
-                    h6 #{extractDomain(val.url)}
-                  div.remove(data-id=val._id)
-                    span.glyphicon.glyphicon-trash(aria-hidden="true")
+              

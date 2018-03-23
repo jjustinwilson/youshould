@@ -4,9 +4,41 @@ var Item = require('../app/models/item');
 var extractDomain = require("../app/extractdomain"
 )
 module.exports = function(req,res) {
-  var itemsSent = function(callback){
+  var sent = function(callback){
     Item.find({
          user: req.user.local.email
+     },function(err,list){
+       if(err){
+         callback(err,null)
+       }
+       callback(null, list)
+     });
+  }
+  var inbox = function(callback){
+    Item.find({
+         who: req.user.local.email
+     },function(err,list){
+       if(err){
+         callback(err,null)
+       }
+       callback(null, list)
+     });
+  }
+  var itemsRead = function(callback){
+    Item.find({
+         who: req.user.local.email,
+         status: "read"
+     },function(err,list){
+       if(err){
+         callback(err,null)
+       }
+       callback(null, list)
+     });
+  }
+  var itemsArchived = function(callback){
+    Item.find({
+         who: req.user.local.email,
+         status: "archive"
      },function(err,list){
        if(err){
          callback(err,null)
@@ -18,15 +50,21 @@ module.exports = function(req,res) {
     if(err){
       res.status(400).render("error.pug",{user:req.user})
     }
-    
+
     res.render('shares.pug', {
         user : req.user,
-        itemsSent:results.itemsSent,
+        sent:results.sent,
+        inbox:results.inbox,
+        itemsRead:results.itemsRead,
+        itemsArchived:itemsArchived,
         extractDomain:extractDomain
       });
   }
   async.parallel({
-    itemsSent:itemsSent
+    sent,
+    inbox,
+    itemsRead,
+    itemsArchived
   },render)
 
 

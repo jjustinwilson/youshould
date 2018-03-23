@@ -1,6 +1,7 @@
 var Item = require('../app/models/item');
 var Users = require("../app/models/user");
 var shares = require("../app/shares")
+var saveItem = require("../app/save-item")
 const extract = require('meta-extractor');
 const async = require("async");
 //var log = require('why-is-node-running');
@@ -58,7 +59,9 @@ module.exports = function(app, passport) {
     app.get("/profile/edit",isLoggedIn,function(req,res){
         res.render("profile-edit.pug",{"user":req.user});
     });
+
     app.post("/profile/edit",isLoggedIn,upload.single('pic'),resizeimage,function(req,res){
+      console.log(req.body)
       var update = {
         "local.email":req.body.email,
         "local.name":req.body.name,
@@ -68,9 +71,9 @@ module.exports = function(app, passport) {
         update["local.imageURL"] = req.resizedimage
       }
         Users.findByIdAndUpdate(req.body.id,{
-            $set:{update}
+            $set:update
         },{new:true},function(err,result){
-            //console.log(result)
+            console.log(result)
             res.redirect("/profile/edit")
         })
 
@@ -128,7 +131,9 @@ module.exports = function(app, passport) {
       },render)
 
     });
-    app.post("/list",isLoggedIn,function(req,res){
+    app.post("/list",isLoggedIn,saveItem)
+
+    app.post("/list-old",isLoggedIn,function(req,res){
       var getMeta = function(call){
         console.log("getting Meta")
         extract({ uri: req.body.url },function(err,output){
@@ -219,7 +224,35 @@ module.exports = function(app, passport) {
               res.send({"result":"success"})
           }
         });
+    });
+    app.post("/item/archive/",function(req,res){
+      console.log(req.body)
+      Item.findByIdAndUpdate(req.body.id,{
+          $set:{status:"archive"}
+      },{new:true},function(err,result){
+          if(err){
+            console.log(err)
+            res.send({result:"error"})
+          }else{
+              res.send({result:"success"})
+            }
+        }
+      );
+    });
+    app.post("/item/open/",isLoggedIn,function(req,res){
+
+          Item.findByIdAndUpdate(req.body.id,{
+              $set:{open:req.body.open}
+          },{new:true},function(err,result){
+              if(err){
+                res.send({result:"error"})
+              }else{
+                  res.send({result:"success"})
+                }
+            }
+          );
     })
+
     app.get("/user/contacts",isLoggedIn,function(req,res){
         Item.find({user:req.user.local.email}).where("who").ne(null).distinct('who', function(error, contacts) {
             res.json(contacts);

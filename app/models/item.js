@@ -13,7 +13,9 @@ var itemSchema = mongoose.Schema({
         image:String,
         meta:Object,
         who:String,
-        verb:{default:"read",type:String}
+        verb:{default:"read",type:String},
+        open:{default:false, type:Boolean},
+        status:{default:"unread",type:String}
 
 
 

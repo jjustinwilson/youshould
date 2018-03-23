@@ -34,6 +34,7 @@ app.set('view engine', 'pug'); // set up ejs for templating
 
 app.use(express.static('public'))
 app.use('/css', expressLess(__dirname + '/less'));
+
 // required for passport
 app.use(session({
     secret: 'LrtmAqfGHcVXVPq3ikqxnats', // session secret

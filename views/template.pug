@@ -2,9 +2,9 @@ html
   head
     title Node Authentication
     script(src="//code.jquery.com/jquery-3.3.1.min.js")
-    script(src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js")
+    script(src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
     script(src="/scripts/youshould.js")
-    link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+    //-link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
     link(rel='stylesheet', href='//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css')
     link(rel='stylesheet', type = "text/css" href='/css/style.css')
   body
@@ -17,7 +17,7 @@ html
         .navbar-collapse.collapse
           ul.nav.navbar-nav
             li
-              a(href='list') Your List
+              a(href='/list') Your List
             li
               a(href='/shares') Shares    
           ul.nav.navbar-nav.navbar-right
@@ -27,6 +27,9 @@ html
                   a(href="/profile") Profile
                 li
                   a(href='/profile/edit') Edit Profile
+                li.divider(role="separator")
+                li
+                  a(href="/logout") Logout  
               if user.local.name
                 if user.local.imageURL
                   img.menuProfileImage(src = "/profile/300/"+user.local.imageURL)

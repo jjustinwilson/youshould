@@ -1,0 +1,27 @@
+li.item(class = open)
+  .itemImage(style="background-image:url("+val.image+")")
+  .content
+    h4
+      a(href = val.url target="_blank") #{val.title}
+    h6
+       #{val.url}
+      
+    .bottom
+      h5 You think #{val.who} should #{val.verb} this
+      .website
+        img.favicon(src = "http://"+extractDomain(val.url)+"/favicon.ico")  
+        h6  
+          a(href = val.url target="_blank") #{extractDomain(val.url)}
+      span.openeed(data-id=val._id data-open = val.open)
+        if val.open
+          span.glyphicon.glyphicon-eye-open(aria-hidden="true")
+          h6 Read 
+        else
+          span.glyphicon.glyphicon-eye-close(aria-hidden="true")
+          h6 Unread  
+      span.archive(data-id=val._id)
+        span.glyphicon.glyphicon-folder-close(aria-hidden="true")
+        h6
+      span.remove(data-id=val._id)
+        span.glyphicon.glyphicon-trash(aria-hidden="true")
+        h6

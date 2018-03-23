@@ -1,4 +1,5 @@
-@import url(https://fonts.googleapis.com/css?family=Raleway:200,300,400,500,700,800);
+@import 'bootstrap-3.3.7/less/bootstrap.less';
+@import url(https://fonts.googleapis.com/css?family=Raleway:200,300,400,500,700,800|Roboto:400,500,600,700,800);
 
 @light-gray: rgb(245, 245, 245);
 @mid-gray: rgb(207, 207, 207);
@@ -44,7 +45,7 @@ body > div.navbar.navbar-default > div > div.navbar-collapse.collapse > ul.nav.n
               width:30px;
               border-radius: 50%;
               float:left;
-              margin:5px 0px 5px 0px;
+              margin:15px 0px 5px 0px;
             }
             a.dropdown-toggle{
               float:left;
@@ -69,12 +70,25 @@ body > div.navbar.navbar-default > div > div.navbar-collapse.collapse > ul.nav.n
   margin-top:100px;
   padding-left: 0px;
   li{
+    .content{
+      height:100%;
+      .make-sm-column(10);
+    }
     a{
-      font-weight: 500;
+      font-weight: 600;
+      font-family: Raleway,Roboto, sans-serif;
+    }
+    h4{
+      a{
+        font-family: Roboto,Raleway, sans-serif;
+        font-weight:900;
+      }
     }
     h6{
       text-transform: uppercase;
     }
+    display: flex;
+    position:relative;
     list-style: none;
     display:block;
     //border:1px solid @mid-gray;
@@ -82,15 +96,92 @@ body > div.navbar.navbar-default > div > div.navbar-collapse.collapse > ul.nav.n
     padding:0px;
     margin-bottom:45px;
     overflow:auto;
-    min-height:150px;
+    height:150px;
     .itemImage{
       background-size:cover;
       min-height:150px;
+      height:150px;
       background-position: center;
+      .make-sm-column(2);
     }
     .favicon{
       height:15px;
       width:15px;
+    }
+    .bottom{
+      width:100%;
+      .website{
+        float:left;
+      }
+      h6 {
+        display:inline-block;
+        margin:0px 7px 0px 7px;
+      }
+      .remove{
+        h6::before{
+          content:"Delete";
+        }
+        &:hover{
+          h6::before{
+            color:blue;
+            content:"Click to Delete"
+          }
+          .glyphicon{
+            color:blue;
+          }
+        }
+      }
+      .archive{
+        h6::before{
+          content:"Archive"
+        }
+        &:hover{
+          h6::before{
+            content:"Send to Archive"
+          }
+        }
+      }
+      h5{
+        text-transform: uppercase;
+      }
+      bottom:0px;
+      position:absolute;
+      //height:30px;
+    }
+  }
+  li.read{
+    background-color:rgb(247, 247, 247);
+    .itemImage{
+      background-color: gray;
+      -moz-filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale") !important;
+         -o-filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale") !important;
+         -webkit-filter: grayscale(100%) !important;
+         filter: gray ;
+         filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
+    }
+    h4,h5,h6{
+       a{color:gray;}
+    }
+  }
+}
+ul.master_list.boxes{
+  li.item{
+    .make-sm-column(3);
+    float:left;
+    display:block;
+    min-height:400px;
+    padding:15px;
+    overflow: auto;
+    height:auto;
+    .itemImage{
+      width:100%;
+      margin-bottom:7px;
+
+    }
+    .content{
+      width:100%;
+      height:250px  ;
+      overflow: auto;
     }
   }
 }
