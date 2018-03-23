@@ -166,7 +166,7 @@ body > div.navbar.navbar-default > div > div.navbar-collapse.collapse > ul.nav.n
 }
 ul.master_list.boxes{
   li.item{
-    .make-sm-column(3);
+    .make-sm-column(4);
     float:left;
     display:block;
     min-height:400px;
@@ -180,8 +180,17 @@ ul.master_list.boxes{
     }
     .content{
       width:100%;
-      height:250px  ;
+      height:175px  ;
       overflow: auto;
+      .description{display:none;}
+      .bottom{
+        .website{
+          display:block;
+          float:none;
+          width:100%;
+          margin-bottom:5px;
+        }
+      }
     }
   }
 }

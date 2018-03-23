@@ -3,11 +3,10 @@ li.item(class = open)
   .content
     h4
       a(href = val.url target="_blank") #{val.title}
-    h6
-       #{val.url}
-      
+    if val.meta.ogDescription
+      p.description #{val.meta.ogDescription}
     .bottom
-      h5 You think #{val.who} should #{val.verb} this
+      h5 <strong>#{direction}</strong> #{val.who}
       .website
         img.favicon(src = "http://"+extractDomain(val.url)+"/favicon.ico")  
         h6  

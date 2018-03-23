@@ -39,6 +39,9 @@ html
               else
                 a.dropdown-toggle(href='#', data-toggle='dropdown') Profile 
               
+              if message
+                .alert.alert-danger
+                  p message
     block content
     footer.footer
         
