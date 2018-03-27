@@ -111,6 +111,7 @@ module.exports = function(req,res) {
               to: req.body.who
             },
             locals: {
+              req:req,
               user: req.user,
               item: item,
               otherItems: otherItems

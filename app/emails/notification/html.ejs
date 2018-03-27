@@ -234,7 +234,7 @@
         <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="600" style="margin: auto;" class="email-container">
             <tr>
                 <td style="padding: 20px 0; text-align: center">
-                    <img src="http://localhost:8080/images/logo.png" width="50" height="50" alt="alt_text" border="0" style="height: auto; background: #ffffff; font-family: sans-serif; font-size: 15px; line-height: 140%; color: black; font-weight:200;">
+                    <img src="http://<%= req.headers.host %>/images/logo.png" width="50" height="50" alt="alt_text" border="0" style="height: auto; background: #ffffff; font-family: sans-serif; font-size: 15px; line-height: 140%; color: black; font-weight:200;">
                     <h3>Should</h3>
                 </td>
             </tr>
@@ -247,7 +247,7 @@
             <!-- Hero Image, Flush : BEGIN -->
             <tr>
                 <td bgcolor="#ffffff" align="center">
-                    <img src="http://localhost:8080/image-narrow/?image=<%=item.image %>" width="600" height="200" alt="alt_text" border="0" align="center" style="width: 100%; max-width: 600px; height: auto; background: #ffffff; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555; margin: auto;" class="g-img">
+                    <img src="http://<%= req.headers.host %>/image-narrow/?image=<%=item.image %>" width="600" height="200" alt="alt_text" border="0" align="center" style="width: 100%; max-width: 600px; height: auto; background: #ffffff; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555; margin: auto;" class="g-img">
                 </td>
             </tr>
             <!-- Hero Image, Flush : END -->
@@ -294,7 +294,7 @@
                                <table role="presentation" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
                                    <tr>
                                        <td dir="ltr" valign="top" style="padding: 0 10px;">
-                                           <img src="http://localhost:8080/image-square/?image=<%=i.image %>" width="170" height="170" alt="alt_text" border="0" class="center-on-narrow" style="height: auto; background: #ffffff; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555;">
+                                           <img src="http://<%= req.headers.host %>/image-square/?image=<%=i.image %>" width="170" height="170" alt="alt_text" border="0" class="center-on-narrow" style="height: auto; background: #ffffff; font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555;">
                                        </td>
                                    </tr>
                                </table>
