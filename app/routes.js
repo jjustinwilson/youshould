@@ -64,7 +64,7 @@ module.exports = function(app, passport) {
          })
     });
 
-    app.get('/', function(req, res) {
+    app.get('/start', function(req, res) {
         res.render('index.ejs');
     });
     app.get("/profile",isLoggedIn,function(req,res){
@@ -297,7 +297,7 @@ app.get("/pocket-finish/:code",function(req,res){
       })
     });
 
-    app.get("/shares",isLoggedIn,shares)
+    app.get("/",isLoggedIn,shares)
 
     app.post("/item/remove/",isLoggedIn,function(req,res){
         Item.remove({ "_id": req.body.id }, function (err) {
@@ -459,7 +459,7 @@ app.get('/logout', function(req, res) {
 
         // process the login form
         app.post('/login', passport.authenticate('local-login', {
-            successRedirect : '/list', // redirect to the secure profile section
+            successRedirect : '/', // redirect to the secure profile section
             failureRedirect : '/login', // redirect back to the signup page if there is an error
             failureFlash : true // allow flash messages
         }));
@@ -617,7 +617,7 @@ function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
         return next();
 
-    res.redirect('/');
+    res.redirect('/start');
 }
 
 function verifyToken(req, res, next) {

@@ -43,7 +43,7 @@ module.exports = function(req,res) {
 
   var otherItems = function(item,callback){
     Item.find({
-         who: req.user.local.email
+         who: item.who
      },function(err,list){
        if(err){
          callback(err,null,null)
