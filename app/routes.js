@@ -15,6 +15,8 @@ var mime = require('mime/lite');
 var crypto = require('crypto');
 const fs = require('fs');
 const sharp = require('sharp');
+var pocket = require("pocket-api");
+var request = require("request");
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'public/profile')
@@ -50,6 +52,18 @@ module.exports = function(app, passport) {
     // })
 
     // show the home page (will also have our login links)
+    app.get("/test",function(req,res){
+        var itemQuery = Item.findOne({
+             who: "justin@jamesjwilson.com"
+         }).populate("user-info").exec().then(function(list){
+
+           res.json(list);
+         }).catch(function(err){
+           console.log(err)
+           res.json(err);
+         })
+    });
+
     app.get('/', function(req, res) {
         res.render('index.ejs');
     });
@@ -76,6 +90,41 @@ module.exports = function(app, passport) {
             console.log(result)
             res.redirect("/profile/edit")
         })
+
+
+    })
+
+    app.get("/image-square",function(req,res){
+        //res.send(req.query.image)
+        var resizer = sharp().resize(170, 170).toBuffer(function(err,data,info){
+          if(err){
+            res.send(error)
+          }else{
+            res.set('Content-Type', 'image/png');
+            res.send(data);
+
+          }
+        });
+      request(req.query.image).pipe(resizer)
+
+
+
+
+    })
+    app.get("/image-narrow",function(req,res){
+        //res.send(req.query.image)
+        var resizer = sharp().resize(600, 200).toBuffer(function(err,data,info){
+          if(err){
+            res.send(error)
+          }else{
+            res.set('Content-Type', 'image/png');
+            res.send(data);
+
+          }
+        });
+      request(req.query.image).pipe(resizer)
+
+
 
 
     })
@@ -131,8 +180,42 @@ module.exports = function(app, passport) {
       },render)
 
     });
-    app.post("/list",isLoggedIn,saveItem)
 
+    app.post("/item/save",isLoggedIn,saveItem)
+
+
+app.get("/pocket",function(req,res){
+    var getRequestToken = function(callback){
+      pocket.getRequestToken( auth.pocket, "http://localhost:8080/pocket-finish", function( data ) {
+        console.log( data );
+        callback(null, data)
+      });
+    }
+
+    var render  = function(err,result){
+        console.log(result)
+        var url = "https://getpocket.com/auth/authorize?request_token=" + result.code+"&redirect_uri=http://localhost:8080/pocket-finish/"+ result.code;
+        res.redirect(url);
+    }
+
+
+      async.waterfall([
+        getRequestToken
+      ],render)
+
+
+
+})
+app.get("/pocket-finish/:code",function(req,res){
+  //req.send(res.params)
+  pocket.getAccessToken(
+    auth.pocket,
+    req.params.code,
+    function(result){
+      res.send(result);
+    }
+  )
+})
     app.post("/list-old",isLoggedIn,function(req,res){
       var getMeta = function(call){
         console.log("getting Meta")
@@ -253,8 +336,9 @@ module.exports = function(app, passport) {
           );
     })
 
-    app.get("/user/contacts",isLoggedIn,function(req,res){
-        Item.find({user:req.user.local.email}).where("who").ne(null).distinct('who', function(error, contacts) {
+    app.get("/user/contacts",function(req,res){
+        var user = "justin@jamesjwilson.com";
+        Item.find({user:user}).where("who").ne(null).distinct('who', function(error, contacts) {
             res.json(contacts);
         });
     });

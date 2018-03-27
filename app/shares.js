@@ -20,8 +20,11 @@ module.exports = function(req,res) {
      },function(err,list){
        if(err){
          callback(err,null)
+       }else{
+         callback(null, list)
        }
-       callback(null, list)
+
+
      });
   }
   var itemsRead = function(callback){
@@ -49,16 +52,18 @@ module.exports = function(req,res) {
   var render = function(err,results){
     if(err){
       res.status(400).render("error.pug",{user:req.user})
+    }else{
+
+          res.render('shares.pug', {
+              user : req.user,
+              sent:results.sent,
+              inbox:results.inbox,
+              itemsRead:results.itemsRead,
+              itemsArchived:itemsArchived,
+              extractDomain:extractDomain
+            });
     }
 
-    res.render('shares.pug', {
-        user : req.user,
-        sent:results.sent,
-        inbox:results.inbox,
-        itemsRead:results.itemsRead,
-        itemsArchived:itemsArchived,
-        extractDomain:extractDomain
-      });
   }
   async.parallel({
     sent,

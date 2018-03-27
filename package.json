@@ -26,7 +26,9 @@
     "passport-jwt": "^4.0.0",
     "passport-local": "~1.0.0",
     "passport-twitter": "~1.0.4",
+    "pocket-api": "^0.2.3",
     "pug": "^2.0.1",
+    "request": "^2.85.0",
     "sharp": "^0.20.1",
     "why-is-node-running": "^2.0.2"
   }

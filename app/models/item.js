@@ -19,7 +19,14 @@ var itemSchema = mongoose.Schema({
 
 
 
-});
+}, {
+        toObject: {virtuals:true},
 
+    });
+itemSchema.virtual('user-info', {
+  ref: 'User',
+  localField: 'user',
+  foreignField: 'local.email'
+});
 // create the model for users and expose it to our app
 module.exports = mongoose.model('Item', itemSchema);

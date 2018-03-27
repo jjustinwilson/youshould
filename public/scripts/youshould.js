@@ -1,8 +1,28 @@
 $( document ).ready(function() {
-    console.log( "ready!" );
-    // $.getJSON( "/user/contacts", function( data ) {
-    //     console.log(data)
-    // });
+
+    $.getJSON( "/user/contacts", function( data ) {
+
+      var data = new Bloodhound({
+          datumTokenizer: Bloodhound.tokenizers.whitespace,
+          queryTokenizer: Bloodhound.tokenizers.whitespace,
+          // `states` is an array of state names defined in "The Basics"
+          local: data
+        });
+
+        $('#who').typeahead({
+          hint: true,
+          highlight: true,
+          minLength: 1
+        },
+        {
+          name: 'states',
+          source: data
+        });
+
+
+    });
+
+
     $(".item .remove").click(function(e){
       var item = $(this)
         e.preventDefault();
@@ -28,6 +48,27 @@ $( document ).ready(function() {
             }
         });
     });
-
-
+    $(".selectors a").click(function(e){
+        $(".selectors a ").each(function(e){
+            $(this).removeClass("selected")
+        })
+        $(this).addClass("selected");
+        e.preventDefault();
+        var newClass = $(this).data("type");
+        $("ul.master_list").each(function(l){
+            $(this).removeClass("boxes").removeClass("list").removeClass("standard").addClass(newClass);
+        })
+    })
+    $("#youshould").submit(function(e){
+        e.preventDefault();
+        console.log( $( this ).serialize() );
+        $.ajax({
+          type: "POST",
+          url: '/item/save',
+          data: $( this ).serialize(),
+          success: function(data){
+              console.log(data)
+          }
+        });
+    })
 });

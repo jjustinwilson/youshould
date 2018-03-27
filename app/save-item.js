@@ -5,7 +5,7 @@ const extract = require('meta-extractor');
 const Email = require('email-templates');
 module.exports = function(req,res) {
   var getMeta = function(call){
-    console.log("getting Meta")
+    //console.log("getting Meta")
     extract({ uri: req.body.url },function(err,output){
 
         if(err){
@@ -19,7 +19,7 @@ module.exports = function(req,res) {
   }
 
   var savePost = function(extract,cb){
-    console.log({"extracted_data":extract})
+    //console.log({"extracted_data":extract})
     var saveItem = new Item({
         url:req.body.url,
         user:req.user.local.email,
@@ -40,50 +40,36 @@ module.exports = function(req,res) {
       }
     })
   }
-  var sendEmail = function(item, callback){
-      let transporter = nodeMailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true,
-      auth: {
-          user: 'justin@jamesjwilson.com',
-          pass: '4petessake'
-      }
-  });
 
-  let mailOptions = {
-      from: '"J. Justin Wilson" <'+req.user.local.email+'>', // sender address
-      to: req.body.who, // list of receivers
-      subject: "Foo", // Subject line
-      text: "This is the body text", // plain text body
-      html: '<b>NodeJS Email Tutorial</b>' // html body
-  };
+  var otherItems = function(item,callback){
+    Item.find({
+         who: req.user.local.email
+     },function(err,list){
+       if(err){
+         callback(err,null,null)
+       }else{
+         callback(null, item, list)
+       }
 
 
-
-  transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-          return console.log(error);
-      }
-      console.log('Message %s sent: %s', info.messageId, info.response);
-          callback(null,info)
-      });
-
+     });
   }
-
   var render = function(err,results){
-    console.log(results)
+    //console.log(results)
     if(!err){
       //res.send(results)
-      res.redirect('/list');
+      //res.redirect('/list');
+      res.json({result:"success",saved:results})
     }else{
-      req.session.save_error = 'There was a problem saving the post.';
-      res.redirect('/list');
+      //req.session.save_error = 'There was a problem saving the post.';
+      //res.redirect('/list');
+      console.log(err)
+      res.json({error:err})
     }
   }
 
-  var newEmail = function(item,callback){
-          console.log({body:item})
+  var newEmail = function(item,otherItems,callback){
+          console.log({item:item,otheritems:otherItems})
           let transporter = nodeMailer.createTransport({
           host: 'smtp.gmail.com',
           port: 465,
@@ -96,20 +82,26 @@ module.exports = function(req,res) {
 
           const email = new Email({
           message: {
-            from: req.user.local.email
+            from: req.user.local.email,
+            //subject: req.user.local.name+" shared something with you"
           },
           // uncomment below to send emails in development/test env:
-          send: false,
-          preview:true,
+          send: true,
+          preview:false,
           transport: nodeMailer.createTransport({
-          host: 'smtp.gmail.com',
-          port: 465,
-          secure: true,
-          auth: {
-              user: 'justin@jamesjwilson.com',
-              pass: '4petessake'
+              host: 'smtp.gmail.com',
+              port: 465,
+              secure: true,
+              auth: {
+                  user: 'justin@jamesjwilson.com',
+                  pass: '4petessake'
+                }
+              }),
+          views: {
+            options: {
+              extension: 'ejs' // <---- HERE
             }
-          })
+          }
         });
 
         email
@@ -121,18 +113,24 @@ module.exports = function(req,res) {
             locals: {
               user: req.user,
               item: item,
+              otherItems: otherItems
 
             }
           })
-          .then(callback);
+          .then(function(data){
+            callback(null, data)
+          })
+          .catch(function(err){
+            console.log(err);
+
+          });
 
   }
   async.waterfall([
     getMeta,
     savePost,
     //sendEmail
+    otherItems,
     newEmail
   ],render);
-
-
 }

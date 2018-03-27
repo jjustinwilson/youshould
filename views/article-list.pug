@@ -6,9 +6,9 @@ li.item(class = open)
     if val.meta.ogDescription
       p.description #{val.meta.ogDescription}
     .bottom
-      h5 <strong>#{direction}</strong> #{val.who}
+      h5.direction <strong>#{direction}</strong> #{val[who_user]}
       .website
-        img.favicon(src = "http://"+extractDomain(val.url)+"/favicon.ico")  
+        img.favicon(src = "http://"+extractDomain(val.url)+"/favicon.ico" onError = "this.style.display='none'" )  
         h6  
           a(href = val.url target="_blank") #{extractDomain(val.url)}
       span.openeed(data-id=val._id data-open = val.open)

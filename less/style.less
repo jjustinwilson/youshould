@@ -7,9 +7,22 @@ p, a, h1,h2,h3,h4,h5,h6,h7{
   font-family: 'Raleway','Helvetica', 'Arial', sans-serif;
   font-weight:300;
 }
-body > div.navbar.navbar-default > div > div.navbar-collapse.collapse > ul.nav.navbar-nav.navbar-right > li > img{
 
+.tt-menu{
+    background-color: white;
+    padding:0px 10px 10px 10px;
+  .tt-open{
+    background-color: white;
+  }
+  .tt-suggestion{
+    margin:5px 0px 5px 0px;
+    &:hove{
+      background-color: blue;
+    }
+  }
 }
+
+
 .navbar{
   background-color: white;
   border:none;
@@ -54,18 +67,33 @@ body > div.navbar.navbar-default > div > div.navbar-collapse.collapse > ul.nav.n
     }
   }
 }
-.youshould_form_container{
-  background-color: light-gray;
-  padding:25px;
-  .should_container{
-    width:auto;
-    .should{
-      margin:0px;
+.share_box{
+  .youshould_form_container{
+    #youshould{
+      .form-group{
+        float:left;
+      }
+      .should{
+        float:left;
+        margin: 4px 7px 0px 7px;
+      }
     }
   }
-
 }
+.selectors{
 
+  padding:0px 0px 7px 0px;
+  a{
+    float:right;
+    padding:10px;
+    span{
+      font-size: 20px;
+    }
+    &.selected{
+      color:red;
+    }
+  }
+}
 .master_list{
   margin-top:100px;
   padding-left: 0px;
@@ -110,6 +138,9 @@ body > div.navbar.navbar-default > div > div.navbar-collapse.collapse > ul.nav.n
     }
     .bottom{
       width:100%;
+      .direction{
+
+      }
       .website{
         float:left;
       }
@@ -166,7 +197,11 @@ body > div.navbar.navbar-default > div > div.navbar-collapse.collapse > ul.nav.n
 }
 ul.master_list.boxes{
   li.item{
+
+    transition: width 1s;
+    transition: height 1s;
     .make-sm-column(4);
+    .make-xs-column(6);
     float:left;
     display:block;
     min-height:400px;
@@ -184,6 +219,9 @@ ul.master_list.boxes{
       overflow: auto;
       .description{display:none;}
       .bottom{
+        .direction{
+          font-size: .8em;
+        }
         .website{
           display:block;
           float:none;
@@ -193,4 +231,21 @@ ul.master_list.boxes{
       }
     }
   }
+}
+ul.master_list.list{
+  li.item{
+    height:50px;
+    .content{
+      height:50px;
+      .description{
+        display:none;
+      }
+    }
+    .bottom{
+      display:none;
+    }
+  }
+}
+.share_box{
+  margin:50px 0px 50px 0px;
 }
