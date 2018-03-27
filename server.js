@@ -14,13 +14,13 @@ var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var session      = require('express-session');
 
-var configDB = require('/config/database.js');
+//var configDB = require('./config/database.js');
 
 var expressLess = require('express-less');
 
 //var log = require('why-is-node-running');
 // configuration ===============================================================
-mongoose.connect(configDB.url); // connect to our database
+mongoose.connect("mongodb://youshould:6msDjMbyJViqjoVr@cluster0-shard-00-00-smghr.mongodb.net:27017,cluster0-shard-00-01-smghr.mongodb.net:27017,cluster0-shard-00-02-smghr.mongodb.net:27017/youshould?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin"); // connect to our database
 mongoose.promise = Promise;
 require('./config/passport')(passport); // pass passport for configuration
 
