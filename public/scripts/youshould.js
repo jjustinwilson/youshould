@@ -22,7 +22,11 @@ $( document ).ready(function() {
 
     });
 
+    $(".add-note").click(function(e){
+      e.preventDefault();
 
+      $(".note-container").toggle();
+    })
     $(".item .remove").click(function(e){
       var item = $(this)
         e.preventDefault();

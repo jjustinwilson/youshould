@@ -23,12 +23,14 @@ module.exports = function(req,res) {
     var saveItem = new Item({
         url:req.body.url,
         user:req.user.local.email,
-
         title:extract.title,
         image:extract.ogImage,
         meta:extract,
         who:req.body.who,
-        verb:req.body.verb
+        verb:req.body.verb,
+        note:req.body.note,
+        expire:req.body.expire,
+        subject:req.body.subject
     }
     );
     saveItem.save(function(err,product){

@@ -1,18 +1,41 @@
 .row.share_box
   .col-sm-10.col-sm-offset-1.youshould_form_container
     form(id="youshould", method="post", action="/list")
-      .col-sm-10
-        div.form-group
-          input.form-control(name="who" id="who" data-provide="typeahead" placeholder="WHO")
-        h3.should SHOULD
-        div.form-group
-          select.form-control(name="verb")
-            option read
-            option listen to
-            option watch
+      .col-sm-8
+        .core
+          .form-group.pull-left
+            input.form-control(name="who" id="who" data-provide="typeahead" placeholder="WHO")
+          h3.should SHOULD
+          .form-group.pull-left.verb-container
+            select.form-control(name="verb")
+              option read
+              option listen to
+              option watch
+        
+          .form-group.pull-left
+            input.form-control(name="url" id = "url")
+        .add-note
+          a(href="#") Add Note and Options
+            span.caret
+        .note-container
+          .col-md-12
+            .form-group
+              label(for="expires") Expires In: 
+              select(name="expires")
+                option 1 Day
+                option 7 Days
+                option 30 Days
+                option 90 Days
+          .col-sm-12      
+            .form-group
+              label(for="subject") Subject: 
+              input.form-control(name="subject" id="subject" value = user.local.name+ " thinks should read this")
+            .form-group
+              label(for="note") Note:
+              textarea.form-control( rows="3" name = "note" id = "note")    
       
-        div.form-group
-          input.form-control(name="url" id = "url")
-      
-        div.form-group
-          input.btn.btn-primary(type="submit")
+      .col-sm-2
+        .form-group.pull-left
+          input.btn.btn-primary(type="submit")  
+      .col-sm--offset-2.col-sm-8
+            

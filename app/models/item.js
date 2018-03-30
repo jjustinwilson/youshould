@@ -15,7 +15,10 @@ var itemSchema = mongoose.Schema({
         who:String,
         verb:{default:"read",type:String},
         open:{default:false, type:Boolean},
-        status:{default:"unread",type:String}
+        status:{default:"unread",type:String},
+        expire:String,
+        note:String,
+        subject:String
 
 
 

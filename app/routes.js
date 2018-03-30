@@ -33,7 +33,6 @@ var upload = multer({ storage: storage });
 
 
 
-
 module.exports = function(app, passport) {
 
 // normal routes ===============================================================
@@ -63,7 +62,23 @@ module.exports = function(app, passport) {
            res.json(err);
          })
     });
+    app.get("/react",function(req,res){
 
+
+        Item.find({
+             who: "justin@jamesjwilson.com"
+         },function(err,list){
+           if(err){
+             callback(err,null)
+           }else{
+             res.render("react.ejs",{list:list})
+           }
+
+
+         });
+
+
+    })
     app.get('/start', function(req, res) {
         res.render('index.ejs');
     });
@@ -129,57 +144,6 @@ module.exports = function(app, passport) {
 
     })
     // PROFILE SECTION =========================
-    app.get('/list', isLoggedIn, function(req, res) {
-      var itemsSent = function(callback){
-        Item.find({
-             user: req.user.local.email
-         },function(err,list){
-           if(err){
-             callback(err,null)
-           }
-           callback(null, list)
-         });
-      }
-
-      var itemsReceived = function(callback){
-        Item.find({
-             who: req.user.local.email
-         },function(err,list){
-           if(err){
-             callback(err,null)
-           }
-           callback(null, list)
-         });
-      }
-
-      var extractDomain = function getHostName(url) {
-          var match = url.match(/:\/\/(www[0-9]?\.)?(.[^/:]+)/i);
-          if (match != null && match.length > 2 && typeof match[2] === 'string' && match[2].length > 0) {
-          return match[2];
-          }
-          else {
-              return null;
-          }
-      }
-
-      var render = function(err,results){
-        //console.log(results)
-
-        res.render('list.pug', {
-            user : req.user,
-            itemsSent:results.itemsSent,
-            itemsReceived:results.itemsReceived,
-            extractDomain:extractDomain
-        });
-      }
-
-
-      async.parallel({
-        itemsSent:itemsSent,
-        itemsReceived:itemsReceived
-      },render)
-
-    });
 
     app.post("/item/save",isLoggedIn,saveItem)
 
@@ -216,86 +180,7 @@ app.get("/pocket-finish/:code",function(req,res){
     }
   )
 })
-    app.post("/list-old",isLoggedIn,function(req,res){
-      var getMeta = function(call){
-        console.log("getting Meta")
-        extract({ uri: req.body.url },function(err,output){
 
-            if(err){
-              console.log(err)
-              call(err,null);
-            }else{
-              call(null,output);
-            }
-
-        });
-      }
-
-      var savePost = function(extract,callback){
-        //console.log({"extracted_data":extract})
-        var saveItem = new Item({
-            url:req.body.url,
-            user:req.user.local.email,
-
-            title:extract.title,
-            image:extract.ogImage,
-            meta:extract,
-            who:req.body.who,
-            verb:req.body.verb
-        }
-        );
-        saveItem.save(function(err,product){
-          if(err){
-            callback(err,null)
-          }
-            callback(null,product)
-        })
-
-      }
-      var sendEmail = function(item, callback){
-          let transporter = nodeMailer.createTransport({
-          host: 'smtp.gmail.com',
-          port: 465,
-          secure: true,
-          auth: {
-              user: 'justin@jamesjwilson.com',
-              pass: '4petessake'
-          }
-      });
-      let mailOptions = {
-          from: '"J. Justin Wilson" <'+req.user.local.email+'>', // sender address
-          to: req.body.who, // list of receivers
-          subject: "Foo", // Subject line
-          text: "This is the body text", // plain text body
-          html: '<b>NodeJS Email Tutorial</b>' // html body
-      };
-
-      transporter.sendMail(mailOptions, (error, info) => {
-          if (error) {
-              return console.log(error);
-          }
-          console.log('Message %s sent: %s', info.messageId, info.response);
-              callback(null,info)
-          });
-
-      }
-
-      async.waterfall([
-        getMeta,
-        savePost,
-        sendEmail
-
-      ],function(err,results){
-        console.log(results)
-        if(!err){
-          //res.send(results)
-          res.redirect('/list');
-        }else{
-          req.session.save_error = 'There was a problem saving the post.';
-          res.redirect('/list');
-        }
-      })
-    });
 
     app.get("/",isLoggedIn,shares)
 
@@ -335,7 +220,36 @@ app.get("/pocket-finish/:code",function(req,res){
             }
           );
     })
+    app.get("/item/redirect/:id",function(req,res){
 
+       var getURL = function(callback){
+         Item.findById(req.params.id,function(err,response){
+           if(err){
+             console.log("errr",err);
+             return callback(err, null);
+           }else{
+             response.status = "Clicked";
+             response.save(function(err){
+               if(err){
+                 callback(err,null);
+               }else{
+                 callback(null,response.url);
+               }
+
+             })
+
+           }
+         })
+       }
+
+      var finished = function(err,result){
+        res.redirect(result)
+      }
+      async.waterfall([
+        getURL
+      ],finished)
+
+    });
     app.get("/user/contacts",function(req,res){
         var user = "justin@jamesjwilson.com";
         Item.find({user:user}).where("who").ne(null).distinct('who', function(error, contacts) {

@@ -5,8 +5,12 @@ li.item(class = open)
       a(href = val.url target="_blank") #{val.title}
     if val.meta.ogDescription
       p.description #{val.meta.ogDescription}
+     
     .bottom
       h5.direction <strong>#{direction}</strong> #{val[who_user]}
+      if val.note
+        .note
+          p #{val.note} 
       .website
         img.favicon(src = "http://"+extractDomain(val.url)+"/favicon.ico" onError = "this.style.display='none'" )  
         h6  
