@@ -1,11 +1,14 @@
 var app = require('express');
 var async = require('async')
 var Items = require('../app/models/item');
-var extractDomain = require("../app/extractdomain")
-var check = require('check-types');
+
 var yup = require("yup");
+var utils = require("../app/utils");
 
 module.exports = function(req,res) {
+
+
+
   var sent = function(callback){
     Items.find({
          from: req.user.local.email
@@ -22,22 +25,12 @@ module.exports = function(req,res) {
      });
   }
   var inbox = function(callback){
-    // Item.find({
-    //      to: req.user.local.email
-    //  })
-    //  .populate("user_info")
-    //  .exec(function(err,list){
-    //    if(err){
-    //      callback(err,null)
-    //    }else{
-    //      callback(null, list)
-    //    }
-    //
-    //
-    //  });
+
+
+
     Items.find({to: req.user.local.email}).populate('user').exec(function(error, bands) {
       //res.json(bands)
-      console.log(bands[0].user["local"]['name'])
+
       callback(null, bands)
 
       });
@@ -68,15 +61,24 @@ module.exports = function(req,res) {
     if(err){
       res.status(400).render("error.pug",{user:req.user})
     }else{
-
+          console.log("maintest", utils.hasUser({
+            "user":{
+              "local":{
+                "name":"Justin Wilson",
+                "email":"justin@jamesjwilson.com",
+                "imageURL":"http://ij.org/favicon.ico"
+              }
+            },
+            "url": "foobar",
+            "note":"This is a note"
+          }))
           res.render('shares.pug', {
               user : req.user,
               sent:results.sent,
               inbox:results.inbox,
               itemsRead:results.itemsRead,
               itemsArchived:itemsArchived,
-              extractDomain:extractDomain,
-              check:check
+              utils:utils
             });
     }
 

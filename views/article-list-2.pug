@@ -14,8 +14,8 @@ li.item
       if val.note || val.subject
         .note-container
           .col-sm-3
-            if true
-                img.fromImage.img-responsive(src="/profile/300/"+imageURL)
+            if utils.hasUser(val)
+                img.fromImage.img-responsive(src="/profile/300/"+val.user.local.imageURL)
             h5   #{val[from_to]}    
           .col-sm-8      
             .note
@@ -28,9 +28,9 @@ li.item
     .bottom
       
       .website
-        img.favicon(src = "http://"+extractDomain(val.url)+"/favicon.ico" onError = "this.style.display='none'" )  
+        img.favicon(src = "http://"+utils.extractDomain(val.url)+"/favicon.ico" onError = "this.style.display='none'" )  
         h6  
-          a(href = val.url target="_blank") #{extractDomain(val.url)}
+          a(href = val.url target="_blank") #{utils.extractDomain(val.url)}
       span.openeed(data-id=val._id data-open = val.status)
         if val.status == "read"
           span.glyphicon.glyphicon-eye-open(aria-hidden="true")
