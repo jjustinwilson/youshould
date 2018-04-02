@@ -31,8 +31,12 @@ var userSchema = mongoose.Schema({
         name         : String
     }
 
+},{toJSON: { virtuals: true } });
+userSchema.virtual('user-items', {
+  ref: 'Item',
+  localField: 'local.email',
+  foreignField: 'from'
 });
-
 // generating a hash
 userSchema.methods.generateHash = function(password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);

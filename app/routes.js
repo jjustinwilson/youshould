@@ -1,6 +1,7 @@
 var Item = require('../app/models/item');
 var Users = require("../app/models/user");
 var shares = require("../app/shares")
+var test = require("../app/test")
 var saveItem = require("../app/save-item")
 const extract = require('meta-extractor');
 const async = require("async");
@@ -36,32 +37,12 @@ var upload = multer({ storage: storage });
 module.exports = function(app, passport) {
 
 // normal routes ===============================================================
-    // app.get("/upload",function(req,res){
-    //     res.render("upload.pug")
-    // })
-    // app.post("/upload",upload.single('image'),resizeimage,function(req,res){
-    //
-    //     console.log(req.resizedimage);
-    //     res.render("upload.pug",{image:req.resizedimage})
-    //
-    //
-    //
-    //
-    //
-    // })
+
 
     // show the home page (will also have our login links)
-    app.get("/test",function(req,res){
-        var itemQuery = Item.findOne({
-             who: "justin@jamesjwilson.com"
-         }).populate("user-info").exec().then(function(list){
+    app.get("/",isLoggedIn,shares)
 
-           res.json(list);
-         }).catch(function(err){
-           console.log(err)
-           res.json(err);
-         })
-    });
+    app.get("/test",test);
     app.get("/react",function(req,res){
 
 
@@ -182,7 +163,6 @@ app.get("/pocket-finish/:code",function(req,res){
 })
 
 
-    app.get("/",isLoggedIn,shares)
 
     app.post("/item/remove/",isLoggedIn,function(req,res){
         Item.remove({ "_id": req.body.id }, function (err) {

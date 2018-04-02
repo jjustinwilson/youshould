@@ -1,35 +1,50 @@
 var app = require('express');
 var async = require('async')
-var Item = require('../app/models/item');
-var extractDomain = require("../app/extractdomain"
-)
+var Items = require('../app/models/item');
+var extractDomain = require("../app/extractdomain")
+var check = require('check-types');
+var yup = require("yup");
+
 module.exports = function(req,res) {
   var sent = function(callback){
-    Item.find({
-         user: req.user.local.email
+    Items.find({
+         from: req.user.local.email
      },function(err,list){
        if(err){
          callback(err,null)
        }
+       // if(check(list[0]).has("user")){
+       //   console.log(list[0])
+       // }
+
        callback(null, list)
+
      });
   }
   var inbox = function(callback){
-    Item.find({
-         who: req.user.local.email
-     },function(err,list){
-       if(err){
-         callback(err,null)
-       }else{
-         callback(null, list)
-       }
+    // Item.find({
+    //      to: req.user.local.email
+    //  })
+    //  .populate("user_info")
+    //  .exec(function(err,list){
+    //    if(err){
+    //      callback(err,null)
+    //    }else{
+    //      callback(null, list)
+    //    }
+    //
+    //
+    //  });
+    Items.find({to: req.user.local.email}).populate('user').exec(function(error, bands) {
+      //res.json(bands)
+      console.log(bands[0].user["local"]['name'])
+      callback(null, bands)
 
-
-     });
+      });
   }
   var itemsRead = function(callback){
-    Item.find({
-         who: req.user.local.email,
+    Items.find({
+         to: req.user.local.email,
          status: "read"
      },function(err,list){
        if(err){
@@ -39,8 +54,8 @@ module.exports = function(req,res) {
      });
   }
   var itemsArchived = function(callback){
-    Item.find({
-         who: req.user.local.email,
+    Items.find({
+         to: req.user.local.email,
          status: "archive"
      },function(err,list){
        if(err){
@@ -60,7 +75,8 @@ module.exports = function(req,res) {
               inbox:results.inbox,
               itemsRead:results.itemsRead,
               itemsArchived:itemsArchived,
-              extractDomain:extractDomain
+              extractDomain:extractDomain,
+              check:check
             });
     }
 

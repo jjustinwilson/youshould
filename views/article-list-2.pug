@@ -1,0 +1,47 @@
+li.item
+  .left(style="background-image:url("+val.image+")")
+    
+  .right
+    .top
+      h4
+        a(href = "/item/redirect/"+val._id target="_blank") #{val.title}
+    .middle
+      if val.meta.ogDescription
+        p.description #{val.meta.ogDescription}
+        
+      h5.direction <strong>#{direction}</strong> #{val[from_to]}
+      
+      if val.note || val.subject
+        .note-container
+          .col-sm-3
+            if true
+                img.fromImage.img-responsive(src="/profile/300/"+imageURL)
+            h5   #{val[from_to]}    
+          .col-sm-8      
+            .note
+              
+              if val.subject
+                h4 #{val.subject}
+              if val.note
+                p !{val.note.replace(/(?:\r\n|\r|\n)/g, "</p><p>")}
+      
+    .bottom
+      
+      .website
+        img.favicon(src = "http://"+extractDomain(val.url)+"/favicon.ico" onError = "this.style.display='none'" )  
+        h6  
+          a(href = val.url target="_blank") #{extractDomain(val.url)}
+      span.openeed(data-id=val._id data-open = val.status)
+        if val.status == "read"
+          span.glyphicon.glyphicon-eye-open(aria-hidden="true")
+          h6 #{val.status} 
+        else
+          span.glyphicon.glyphicon-eye-close(aria-hidden="true")
+          h6 #{val.status}   
+      span.archive(data-id=val._id)
+        span.glyphicon.glyphicon-folder-close(aria-hidden="true")
+        h6
+      span.remove(data-id=val._id)
+        span.glyphicon.glyphicon-trash(aria-hidden="true")
+        h6
+         

@@ -29,21 +29,24 @@ block content
           #list.tab-pane.fade.active.in 
             h3 Inbox  
             if inbox
-              ul.master_list
+              ul.item_list
                 each val in inbox
+                  
                   - var open = (val.open ? 'read' : '')
                   - var direction = "From:"
-                  - var who_user = "user";
-                  include article-list.pug
+                  - var from_to = "from";
+                  - var imageURL = val.user['local']['imageURL']
+                  include article-list-2.pug
           #shares.tab-pane.fade
             h3 Sent
             if sent
-              ul.master_list
+              ul.item_list
                 each val in sent
                   - var open = (val.open ? 'read' : '')
                   - var direction = "To:"
-                  - var who_user = "who";
-                  include article-list.pug
+                  - var from_to = "to";
+                  
+                  include article-list-2.pug
           #archive.tab-pane.fade
             h3 Archived Items
             if itemsArchived
@@ -51,7 +54,7 @@ block content
                 each val in itemsArchived
                   - var open = "read"
                   - var direction = "From:"
-                  - var who_user = "user";
+                  - var from_to = "to";
                   //include article-list.pug
           #read.tab-pane.fade
             h3 Read Items
@@ -60,7 +63,7 @@ block content
                 each val in itemsRead
                   - var open = (val.open ? 'read' : '')
                   - var direction = "From:"
-                  - var who_user = "user";
+                  - var from_to = "to";
                   include article-list.pug
                       
         

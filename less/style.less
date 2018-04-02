@@ -116,34 +116,38 @@ p, a, h1,h2,h3,h4,h5,h6,h7{
   margin-top:100px;
   padding-left: 0px;
   li{
-    .content{
-      height:100%;
-      //min-height:150px;
-      .make-sm-column(10);
-    }
-    a{
-      font-weight: 600;
-      font-family: Raleway,Roboto, sans-serif;
-    }
-    h4{
-      a{
-        font-family: Roboto,Raleway, sans-serif;
-        font-weight:900;
-      }
-    }
-    h6{
-      text-transform: uppercase;
-    }
-    display: flex;
+
     position:relative;
     list-style: none;
     display:block;
-    //border:1px solid @mid-gray;
-    //background-color: @light-gray;
-    padding:0px;
-    margin-bottom:45px;
-    overflow:auto;
-    height:150px;
+    clear: both;
+    overflow: auto;
+    margin-bottom: 45px;
+    .content{
+      //height:100%;
+      min-height:150px;
+      .make-sm-column(10);
+      position:relative;
+      .top{
+        a{
+          font-weight: 600;
+          font-family: Raleway,Roboto, sans-serif;
+        }
+        h4{
+          a{
+            font-family: Roboto,Raleway, sans-serif;
+            font-weight:900;
+          }
+        }
+      }
+      .middle{
+        h6{
+          text-transform: uppercase;
+        }
+      }
+    }
+
+
     .itemImage{
       background-size:cover;
       min-height:150px;
@@ -156,7 +160,9 @@ p, a, h1,h2,h3,h4,h5,h6,h7{
       width:15px;
     }
     .bottom{
-      width:100%;
+      //width:100%;
+      bottom:0px;
+      position:absolute;
       .direction{
 
       }
@@ -194,8 +200,7 @@ p, a, h1,h2,h3,h4,h5,h6,h7{
       h5{
         text-transform: uppercase;
       }
-      bottom:0px;
-      position:absolute;
+
       //height:30px;
     }
   }
@@ -268,3 +273,108 @@ ul.master_list.list{
 .share_box{
   margin:50px 0px 50px 0px;
 }
+
+ul.item_list{
+  display:block;
+  padding:0px;
+  margin:50px 0px 0px 0px;
+
+li.item{
+  display:block;
+  position:relative;
+  width:100%;
+  clear:both;
+
+
+  .left{
+    float:left;
+    .make-sm-column(2);
+    height:150px;
+    //margin:0px 15px 0px 0px;
+    background-size:cover;
+  }
+  .right{
+    float:left;
+    margin-bottom: 45px;
+    .make-sm-column(10);
+    min-height:150px;
+    position:relative;
+    .top{
+      a{
+        font-weight: 600;
+        font-family: Raleway,Roboto, sans-serif;
+      }
+      h4{
+        a{
+          font-family: Roboto,Raleway, sans-serif;
+          font-weight:900;
+        }
+      }
+    }
+    .middle{
+      padding:15px 0px 15px 0px;
+      .note-container{
+        padding-top:20px;
+        overflow: auto;
+        margin-bottom: 20px;
+        .note{
+          padding:15px;
+          background-color: @light-gray;
+          border-radius: 15px;
+          //margin-top:20px;
+
+          float:left;
+        }
+        .fromImage{
+          float:left;
+          margin-top:20px;
+        }
+      }
+
+    }
+    .bottom{
+      bottom:0px;
+      position:absolute;
+      .favicon{
+        height:15px;
+        width:15px;
+      }
+      .website{
+        float:left;
+      }
+      h6 {
+        display:inline-block;
+        margin:0px 7px 0px 7px;
+      }
+      .remove{
+        h6::before{
+          content:"Delete";
+        }
+        &:hover{
+          h6::before{
+            color:blue;
+            content:"Click to Delete"
+          }
+          .glyphicon{
+            color:blue;
+          }
+        }
+      }
+      .archive{
+        h6::before{
+          content:"Archive"
+        }
+        &:hover{
+          h6::before{
+            content:"Send to Archive"
+          }
+        }
+      }
+      h5{
+        text-transform: uppercase;
+      }
+    }
+  }
+
+}
+  }

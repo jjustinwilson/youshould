@@ -5,6 +5,7 @@
     "async": "^2.6.0",
     "bcrypt-nodejs": "latest",
     "body-parser": "~1.15.2",
+    "check-types": "^7.3.0",
     "connect-flash": "~0.1.1",
     "connect-mongo": "^2.0.1",
     "cookie-parser": "~1.4.3",
@@ -33,7 +34,8 @@
     "request": "^2.85.0",
     "sharp": "^0.20.1",
     "why-is-node-running": "^2.0.2",
-    "xls-to-json-lc": "^0.3.4"
+    "xls-to-json-lc": "^0.3.4",
+    "yup": "^0.24.1"
   },
   "scripts": {
     "start": "node server.js"

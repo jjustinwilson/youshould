@@ -1,13 +1,15 @@
 li.item(class = open)
   .itemImage(style="background-image:url("+val.image+")")
   .content
-    h4
-      a(href = val.url target="_blank") #{val.title}
-    if val.meta.ogDescription
-      p.description #{val.meta.ogDescription}
+    .top
+      h4
+        a(href = val.url target="_blank") #{val.title}
+    .middle    
+      if val.meta.ogDescription
+        p.description #{val.meta.ogDescription}
+      h5.direction <strong>#{direction}</strong> #{val[who_user]}
      
     .bottom
-      h5.direction <strong>#{direction}</strong> #{val[who_user]}
       if val.note
         .note
           p #{val.note} 
