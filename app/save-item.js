@@ -22,11 +22,11 @@ module.exports = function(req,res) {
     //console.log({"extracted_data":extract})
     var saveItem = new Item({
         url:req.body.url,
-        user:req.user.local.email,
+        from:req.user.local.email,
         title:extract.title,
         image:extract.ogImage,
         meta:extract,
-        who:req.body.who,
+        to:req.body.who,
         verb:req.body.verb,
         note:req.body.note,
         expire:req.body.expire,
@@ -45,7 +45,8 @@ module.exports = function(req,res) {
 
   var otherItems = function(item,callback){
     Item.find({
-         who: item.who
+         to: item.to,
+         from:item.from
      },function(err,list){
        if(err){
          callback(err,null,null)

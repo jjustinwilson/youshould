@@ -1,6 +1,7 @@
 var Item = require('../app/models/item');
 var Users = require("../app/models/user");
 var shares = require("../app/shares")
+var reader = require("../app/reader");
 var test = require("../app/test")
 var saveItem = require("../app/save-item")
 const extract = require('meta-extractor');
@@ -18,6 +19,7 @@ const fs = require('fs');
 const sharp = require('sharp');
 var pocket = require("pocket-api");
 var request = require("request");
+
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'public/profile')
@@ -41,7 +43,7 @@ module.exports = function(app, passport) {
 
     // show the home page (will also have our login links)
     app.get("/",isLoggedIn,shares)
-
+    app.get("/reader/:id", isLoggedIn,reader)
     app.get("/test",test);
     app.get("/react",function(req,res){
 

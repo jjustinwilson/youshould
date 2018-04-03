@@ -1,10 +1,10 @@
 @import 'bootstrap-3.3.7/less/bootstrap.less';
-@import url(https://fonts.googleapis.com/css?family=Raleway:200,300,400,500,700,800|Roboto:400,500,600,700,800);
+@import url('https://fonts.googleapis.com/css?family=Raleway:200,300,400,500,700,800|Roboto:400,500,600,700,800|IBM+Plex+Sans:200,300,500,700,900');
 
 @light-gray: rgb(245, 245, 245);
 @mid-gray: rgb(207, 207, 207);
 p, a, h1,h2,h3,h4,h5,h6,h7{
-  font-family: 'Raleway','Helvetica', 'Arial', sans-serif;
+  font-family: 'IBM Plex Sans','Raleway','Helvetica', 'Arial', sans-serif;
   font-weight:300;
 }
 
@@ -30,8 +30,8 @@ p, a, h1,h2,h3,h4,h5,h6,h7{
     .navbar-header{
       .navbar-brand{
       //  width:250px;
-        font-family: Raleway, sans-serif;
-        font-weight: 300;
+        font-family: "IBM Plex Sans";
+        font-weight: 500;
         img.logo{
           height:40px;
           float:left;
@@ -94,6 +94,7 @@ p, a, h1,h2,h3,h4,h5,h6,h7{
       .note-container{
         display:none;
         padding-top:20px;
+
       }
     }
   }
@@ -131,11 +132,11 @@ p, a, h1,h2,h3,h4,h5,h6,h7{
       .top{
         a{
           font-weight: 600;
-          font-family: Raleway,Roboto, sans-serif;
+          //font-family: "IBM Plex Sans",Raleway,Roboto, sans-serif;
         }
         h4{
           a{
-            font-family: Roboto,Raleway, sans-serif;
+            //font-family: "IBM Plex Sans",Roboto,Raleway, sans-serif;
             font-weight:900;
           }
         }
@@ -279,102 +280,132 @@ ul.item_list{
   padding:0px;
   margin:50px 0px 0px 0px;
 
-li.item{
-  display:block;
-  position:relative;
-  width:100%;
-  clear:both;
-
-
-  .left{
-    float:left;
-    .make-sm-column(2);
-    height:150px;
-    //margin:0px 15px 0px 0px;
-    background-size:cover;
-  }
-  .right{
-    float:left;
-    margin-bottom: 45px;
-    .make-sm-column(10);
-    min-height:150px;
+  li.item{
+    display:block;
     position:relative;
-    .top{
-      a{
-        font-weight: 600;
-        font-family: Raleway,Roboto, sans-serif;
-      }
-      h4{
+    width:100%;
+    clear:both;
+
+
+    .left{
+      float:left;
+      .make-sm-column(2);
+      height:150px;
+      //margin:0px 15px 0px 0px;
+      background-size:cover;
+    }
+    .right{
+      float:left;
+      margin-bottom: 45px;
+      .make-sm-column(10);
+      min-height:150px;
+      position:relative;
+      .top{
         a{
-          font-family: Roboto,Raleway, sans-serif;
-          font-weight:900;
+          font-weight: 600;
+
+        }
+        h4{
+          a{
+
+            font-weight:900;
+          }
         }
       }
-    }
-    .middle{
-      padding:15px 0px 15px 0px;
-      .note-container{
-        padding-top:20px;
-        overflow: auto;
-        margin-bottom: 20px;
-        .note{
-          padding:15px;
-          background-color: @light-gray;
-          border-radius: 15px;
-          //margin-top:20px;
+      .middle{
+        padding:15px 0px 15px 0px;
+        .note-container{
+          padding-top:20px;
+          overflow: auto;
+          margin-bottom: 20px;
+          .name{
+            margin: 4px 0px 4px 0px;
+          }
+          .note{
+            padding:15px;
+            background-color: @light-gray;
+            border-radius: 15px;
+            //margin-top:20px;
 
+            float:left;
+            &::before {
+                content:"\A";
+                border-style: solid;
+                border-width: 10px 15px 10px 0;
+                border-color: transparent @light-gray transparent transparent;
+                position: absolute;
+                left: 0px;
+            }
+          }
+          .fromImage{
+            float:left;
+            margin-top:20px;
+          }
+        }
+
+      }
+      .bottom{
+        bottom:0px;
+        position:absolute;
+        .favicon{
+          height:15px;
+          width:15px;
+        }
+        .website{
           float:left;
         }
-        .fromImage{
-          float:left;
-          margin-top:20px;
+        h6 {
+          display:inline-block;
+          margin:0px 7px 0px 7px;
+        }
+        .remove{
+          h6::before{
+            content:"Delete";
+          }
+          &:hover{
+            h6::before{
+              color:blue;
+              content:"Click to Delete"
+            }
+            .glyphicon{
+              color:blue;
+            }
+          }
+        }
+        .archive{
+          h6::before{
+            content:"Archive"
+          }
+          &:hover{
+            h6::before{
+              content:"Send to Archive"
+            }
+          }
+        }
+        h5{
+          text-transform: uppercase;
         }
       }
+    }
 
-    }
-    .bottom{
-      bottom:0px;
-      position:absolute;
-      .favicon{
-        height:15px;
-        width:15px;
-      }
-      .website{
-        float:left;
-      }
-      h6 {
-        display:inline-block;
-        margin:0px 7px 0px 7px;
-      }
-      .remove{
-        h6::before{
-          content:"Delete";
-        }
-        &:hover{
-          h6::before{
-            color:blue;
-            content:"Click to Delete"
-          }
-          .glyphicon{
-            color:blue;
-          }
-        }
-      }
-      .archive{
-        h6::before{
-          content:"Archive"
-        }
-        &:hover{
-          h6::before{
-            content:"Send to Archive"
-          }
-        }
-      }
-      h5{
-        text-transform: uppercase;
-      }
-    }
   }
-
 }
+.htmlReader{
+  width: 100%; height: 100%; margin: 0; padding: 0;
+  body.reader{
+    width: 100%; height: 100%; margin: 0; padding: 0;
+    .ushouldPane {
+      position: absolute;bottom:0; left: 0; right: 0; height: 70px; background-color: white;z-index: 10;
+      padding: 10px 0px 10px 0px;
+      .logo{
+        height:50px;
+        float:left;
+
+      }
+      h3{float:left;}
+    }
+    .second-row {position: absolute; top: 0px; left: 0; right: 0; bottom: 0; }
+    .second-row iframe {display: block; width: 100%; height: 100%; border: none;}
+
   }
+}
